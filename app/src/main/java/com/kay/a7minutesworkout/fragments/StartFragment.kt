@@ -1,11 +1,14 @@
-package com.kay.a7minutesworkout
+package com.kay.a7minutesworkout.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
@@ -17,7 +20,7 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentStartBinding.inflate(inflater, container, false)
 
@@ -26,11 +29,7 @@ class StartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.flStart.setOnClickListener {
-            Toast.makeText(
-                context,
-                "Here we will start the exercise",
-                Toast.LENGTH_SHORT
-            ).show()
+            findNavController().navigate(R.id.action_startFragment_to_exerciseFragment)
         }
     }
 
