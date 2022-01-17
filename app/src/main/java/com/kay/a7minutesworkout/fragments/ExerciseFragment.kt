@@ -20,6 +20,10 @@ class ExerciseFragment : Fragment() {
     // Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
     private var restProgress = 0
 
+    // exercise timer and exerciseProgress
+    private var exerciseTimer: CountDownTimer? = null
+    private var exerciseProgress = 0
+
     private var _binding: FragmentExerciseBinding? = null
     private val binding get() = _binding!!
 
@@ -51,6 +55,7 @@ class ExerciseFragment : Fragment() {
          * Here firstly we will check if the timer is running the and it is not null then cancel the running timer and start the new one.
          * And set the progress to initial which is 0.
          */
+        // In other words, we reset the timer if we go back to the first fragment
         if (restTimer != null) {
             restTimer!!.cancel()
             restProgress = 0
@@ -65,27 +70,58 @@ class ExerciseFragment : Fragment() {
 
         binding.progressBar.progress = restProgress
 
-        restTimer = object : CountDownTimer(10000, 1000) {
+        restTimer = object :
+            CountDownTimer(10000, 1000) { // <- it start from 10 sec and every countdown is 1 second
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 restProgress++
                 binding.progressBar.progress = 10 - restProgress
                 binding.tvTimer.text = (10 - restProgress).toString()
             }
+
+            override fun onFinish() {
+                setupExerciseView()
+            }
+        }.start()
+    }
+
+    private fun setupExerciseView() {
+        // In other words, we reset the timer if we go back to the first fragment
+        binding.flProgressBar.visibility = View.INVISIBLE
+        binding.tvTitle.text = "Exercise Name"
+        binding.flExerciseView.visibility = View.VISIBLE
+        if (exerciseTimer != null) {
+            exerciseTimer!!.cancel()
+            exerciseProgress = 0
+        }
+        // This function is used to set the progress details.
+        setExerciseProgressBar()
+    }
+
+    private fun setExerciseProgressBar() {
+
+        binding.progressBarExercise.progress = exerciseProgress
+
+        exerciseTimer = object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // increase restProgress by 1 value
+                exerciseProgress++
+                binding.progressBarExercise.progress = 30 - exerciseProgress
+                binding.tvTimerExercise.text = (30 - exerciseProgress).toString()
+            }
+
             override fun onFinish() {
                 Toast.makeText(
                     context,
-                    "Here we will start the exercise",
+                    "30 seconds are over, lets go to the rest view",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }.start()
-
     }
 
-
     override fun onDestroy() {
-        if(restTimer != null){
+        if (restTimer != null) {
             restTimer?.cancel()
             restProgress = 0
         }
