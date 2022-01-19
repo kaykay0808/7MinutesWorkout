@@ -40,8 +40,9 @@ class ExerciseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // toolbar setup
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbarExercise)
-
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbarExercise)
+        // Back button on toolbar
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // navigate back with navHost
         binding.toolbarExercise.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -50,7 +51,6 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun setupRestView() {
-
         /**
          * Here firstly we will check if the timer is running the and it is not null then cancel the running timer and start the new one.
          * And set the progress to initial which is 0.
