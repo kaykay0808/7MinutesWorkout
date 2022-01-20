@@ -13,14 +13,16 @@ import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
 
 class ExerciseFragment : Fragment() {
 
-    // Variable for 10 seconds rest timer?
-    // Variable for Rest timer. We will initialize it later.
+    // Variable for 10 seconds / Variable for Rest timer
+    /** --Pause tid-- */
     private var restTimer: CountDownTimer? = null
+    private var restProgress =
+        0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
 
-    // Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
-    private var restProgress = 0
+    private val restTimerStartValue = 10
 
-    // exercise timer and exerciseProgress
+    // Exercise timer / ExerciseProgress
+    /** --Trenings tid-- */
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
 
@@ -39,9 +41,9 @@ class ExerciseFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // toolbar setup
+        // toolbar setup for fragments
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbarExercise)
-        // Back button on toolbar
+        // Back button setup on toolbar for fragments
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // navigate back with navHost
         binding.toolbarExercise.setNavigationOnClickListener {
@@ -51,14 +53,12 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun setupRestView() {
-        /**
-         * Here firstly we will check if the timer is running the and it is not null then cancel the running timer and start the new one.
-         * And set the progress to initial which is 0.
-         */
+        // (1) Check if the timer (-CountDownTimer-) is running. if it is not null then cancel the running timer and start the new one.
+        // (2) Initiate  the restProgress which is 0.
         // In other words, we reset the timer if we go back to the first fragment
         if (restTimer != null) {
-            restTimer!!.cancel()
-            restProgress = 0
+            restTimer!!.cancel() // <- !! means this is for sure not null
+            restProgress = 0 // <- Initiate restProgress
         }
 
         // This function is used to set the progress details.
@@ -75,8 +75,8 @@ class ExerciseFragment : Fragment() {
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 restProgress++
-                binding.progressBar.progress = 10 - restProgress
-                binding.tvTimer.text = (10 - restProgress).toString()
+                binding.progressBar.progress = restTimerStartValue - restProgress
+                binding.tvTimer.text = (restTimerStartValue - restProgress).toString()
             }
 
             override fun onFinish() {
@@ -111,6 +111,7 @@ class ExerciseFragment : Fragment() {
             }
 
             override fun onFinish() {
+                setupExerciseView()
                 Toast.makeText(
                     context,
                     "30 seconds are over, lets go to the rest view",
@@ -121,9 +122,11 @@ class ExerciseFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        if (restTimer != null) {
+        if (restTimer != null || exerciseTimer != null) {
             restTimer?.cancel()
             restProgress = 0
+            exerciseTimer?.cancel()
+            exerciseProgress = 0
         }
         super.onDestroy()
         _binding = null
