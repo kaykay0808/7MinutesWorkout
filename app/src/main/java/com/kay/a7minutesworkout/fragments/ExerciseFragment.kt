@@ -9,13 +9,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.kay.a7minutesworkout.Constants
+import com.kay.a7minutesworkout.ExerciseModel
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
 
 class ExerciseFragment : Fragment() {
 
     // Variable for 10 seconds / Variable for Rest timer
     /** --Pause tid-- */
-    private var restTimer: CountDownTimer? = null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
+    private var restTimer: CountDownTimer? =
+        null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
     private var restProgress =
         0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
 
@@ -25,6 +28,10 @@ class ExerciseFragment : Fragment() {
     /** --Trenings tid-- */
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
+
+    /** Exercise models*/
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
 
     private var _binding: FragmentExerciseBinding? = null
     private val binding get() = _binding!!
@@ -45,6 +52,9 @@ class ExerciseFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbarExercise)
         // Back button setup on toolbar for fragments
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        exerciseList = Constants.defaultExerciseList()
+
         // navigate back with navHost
         binding.toolbarExercise.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -79,6 +89,7 @@ class ExerciseFragment : Fragment() {
             }
 
             override fun onFinish() {
+                currentExercisePosition
                 setupExerciseView()
             }
         }.start()
@@ -124,7 +135,7 @@ class ExerciseFragment : Fragment() {
             restTimer?.cancel()
             restProgress = 0
         }
-        if(exerciseTimer != null){
+        if (exerciseTimer != null) {
             exerciseTimer?.cancel()
             exerciseProgress = 0
         }
