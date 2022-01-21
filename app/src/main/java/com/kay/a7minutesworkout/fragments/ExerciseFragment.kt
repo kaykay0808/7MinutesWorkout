@@ -15,7 +15,7 @@ class ExerciseFragment : Fragment() {
 
     // Variable for 10 seconds / Variable for Rest timer
     /** --Pause tid-- */
-    private var restTimer: CountDownTimer? = null
+    private var restTimer: CountDownTimer? = null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
     private var restProgress =
         0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
 
@@ -67,7 +67,6 @@ class ExerciseFragment : Fragment() {
 
     // function which will set the rest progressbar
     private fun setRestProgressBar() {
-
         binding.progressBar.progress = restProgress
 
         restTimer = object :
@@ -99,7 +98,6 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun setExerciseProgressBar() {
-
         binding.progressBarExercise.progress = exerciseProgress
 
         exerciseTimer = object : CountDownTimer(30000, 1000) {
@@ -122,9 +120,11 @@ class ExerciseFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        if (restTimer != null || exerciseTimer != null) {
+        if (restTimer != null) {
             restTimer?.cancel()
             restProgress = 0
+        }
+        if(exerciseTimer != null){
             exerciseTimer?.cancel()
             exerciseProgress = 0
         }
