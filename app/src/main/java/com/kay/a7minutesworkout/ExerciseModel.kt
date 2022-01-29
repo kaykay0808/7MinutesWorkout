@@ -7,7 +7,7 @@ class ExerciseModel(
     private var isCompleted: Boolean,
     private var isSelected: Boolean
 ) {
-    // The function for the models.
+    // The functions for the model.
     fun getId(): Int {
         return id
     }

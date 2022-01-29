@@ -30,7 +30,7 @@ class ExerciseFragment : Fragment() {
     private var exerciseProgress = 0
 
     /** Exercise models*/
-    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var exerciseList: MutableList<ExerciseModel>? = null
     private var currentExercisePosition = -1
 
     private var _binding: FragmentExerciseBinding? = null
@@ -66,6 +66,12 @@ class ExerciseFragment : Fragment() {
         // (1) Check if the timer (-CountDownTimer-) is running. if it is not null then cancel the running timer and start the new one.
         // (2) Initiate  the restProgress which is 0.
         // In other words, we reset the timer if we go back to the first fragment
+        binding.flRestView.visibility = View.VISIBLE
+        binding.tvTitle.visibility = View.VISIBLE
+        binding.tvExerciseName.visibility = View.INVISIBLE
+        binding.flExerciseView.visibility = View.INVISIBLE
+        binding.ivExerciseImage.visibility = View.INVISIBLE
+
         if (restTimer != null) {
             restTimer!!.cancel() // <- !! means this is for sure not null
             restProgress = 0 // <- Initiate restProgress
@@ -84,26 +90,35 @@ class ExerciseFragment : Fragment() {
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 restProgress++
+                // set progressBar value
                 binding.progressBar.progress = restTimerStartValue - restProgress
+                // set the timer value
                 binding.tvTimer.text = (restTimerStartValue - restProgress).toString()
             }
 
             override fun onFinish() {
-                currentExercisePosition
+                currentExercisePosition++
                 setupExerciseView()
             }
         }.start()
     }
 
     private fun setupExerciseView() {
-        // In other words, we reset the timer if we go back to the first fragment
-        binding.flProgressBar.visibility = View.INVISIBLE
-        binding.tvTitle.text = "Exercise Name"
-        binding.flExerciseView.visibility = View.VISIBLE
+        // here we reset the timer if we go back to the first fragment
+        binding.flRestView.visibility = View.INVISIBLE // <- Rest View Frame Layout is invisible.
+        binding.tvTitle.visibility = View.INVISIBLE
+        binding.tvExerciseName.visibility = View.VISIBLE
+        binding.flExerciseView.visibility = View.VISIBLE // <- Exercise view is visible
+        binding.ivExerciseImage.visibility = View.VISIBLE
         if (exerciseTimer != null) {
             exerciseTimer!!.cancel()
             exerciseProgress = 0
         }
+        // set the image view.
+        binding.ivExerciseImage.setImageResource(exerciseList!![currentExercisePosition].getImage())
+        // set the exercise name
+        binding.tvExerciseName.text = exerciseList!![currentExercisePosition].getName()
+
         // This function is used to set the progress details.
         setExerciseProgressBar()
     }
@@ -120,12 +135,16 @@ class ExerciseFragment : Fragment() {
             }
 
             override fun onFinish() {
-                setupExerciseView()
-                Toast.makeText(
-                    context,
-                    "30 seconds are over, lets go to the rest view",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // we need to go back to the rest view again when we are finish
+                if (currentExercisePosition < exerciseList?.size!! - 1){
+                    setupRestView()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "SHIT!! YOU MADE IT AND COMPLETED 7 MINUTES WORKOUT",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }.start()
     }

@@ -2,8 +2,8 @@ package com.kay.a7minutesworkout
 
 object Constants {
 
-    fun defaultExerciseList(): ArrayList<ExerciseModel> {
-        val exerciseList = ArrayList<ExerciseModel>()
+    fun defaultExerciseList(): MutableList<ExerciseModel> {
+        val exerciseList = mutableListOf<ExerciseModel>()
 
         // Exercise 1
         val jumpingJacks = ExerciseModel(
