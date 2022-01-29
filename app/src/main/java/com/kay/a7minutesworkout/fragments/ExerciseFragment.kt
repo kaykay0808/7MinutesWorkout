@@ -71,8 +71,13 @@ class ExerciseFragment : Fragment() {
         binding.tvExerciseName.visibility = View.INVISIBLE
         binding.flExerciseView.visibility = View.INVISIBLE
         binding.ivExerciseImage.visibility = View.INVISIBLE
+        // upcoming Text views
+        binding.upcomingLabel.visibility = View.VISIBLE
+        binding.tvUpcomingExerciseName.visibility = View.VISIBLE
+        // set the text view on the next exercise
+        binding.tvUpcomingExerciseName.text = exerciseList!![currentExercisePosition + 1].getName()
 
-        if (restTimer != null) {
+            if (restTimer != null) {
             restTimer!!.cancel() // <- !! means this is for sure not null
             restProgress = 0 // <- Initiate restProgress
         }
@@ -110,6 +115,10 @@ class ExerciseFragment : Fragment() {
         binding.tvExerciseName.visibility = View.VISIBLE
         binding.flExerciseView.visibility = View.VISIBLE // <- Exercise view is visible
         binding.ivExerciseImage.visibility = View.VISIBLE
+        // upcoming Text Views
+        binding.upcomingLabel.visibility = View.INVISIBLE
+        binding.tvUpcomingExerciseName.visibility = View.INVISIBLE
+
         if (exerciseTimer != null) {
             exerciseTimer!!.cancel()
             exerciseProgress = 0
