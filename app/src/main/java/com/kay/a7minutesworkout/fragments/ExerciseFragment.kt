@@ -2,6 +2,8 @@ package com.kay.a7minutesworkout.fragments
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +14,12 @@ import androidx.navigation.fragment.findNavController
 import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
+import java.util.*
 
-class ExerciseFragment : Fragment() {
+class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
+
+    // Text to speak
+    private var tts: TextToSpeech? = null
 
     // Variable for 10 seconds / Variable for Rest timer
     /** --Pause tid-- */
@@ -59,6 +65,9 @@ class ExerciseFragment : Fragment() {
         binding.toolbarExercise.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        // Text to speak
+        tts = TextToSpeech(context, this)
         setupRestView()
     }
 
@@ -77,7 +86,7 @@ class ExerciseFragment : Fragment() {
         // set the text view on the next exercise
         binding.tvUpcomingExerciseName.text = exerciseList!![currentExercisePosition + 1].getName()
 
-            if (restTimer != null) {
+        if (restTimer != null) {
             restTimer!!.cancel() // <- !! means this is for sure not null
             restProgress = 0 // <- Initiate restProgress
         }
@@ -123,6 +132,10 @@ class ExerciseFragment : Fragment() {
             exerciseTimer!!.cancel()
             exerciseProgress = 0
         }
+
+        // speak out the exercise name
+        speakOut(exerciseList!![currentExercisePosition].getName())
+
         // set the image view.
         binding.ivExerciseImage.setImageResource(exerciseList!![currentExercisePosition].getImage())
         // set the exercise name
@@ -145,7 +158,7 @@ class ExerciseFragment : Fragment() {
 
             override fun onFinish() {
                 // we need to go back to the rest view again when we are finish
-                if (currentExercisePosition < exerciseList?.size!! - 1){
+                if (currentExercisePosition < exerciseList?.size!! - 1) {
                     setupRestView()
                 } else {
                     Toast.makeText(
@@ -158,6 +171,24 @@ class ExerciseFragment : Fragment() {
         }.start()
     }
 
+    /** Text to speech features */
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts!!.setLanguage(Locale.US)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The Language specified is not supported")
+            }
+        } else {
+            Log.e("TTS", "Initialization Failed!!")
+        }
+    }
+
+    private fun speakOut(text: String) {
+        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+    /** Text to speech features */
+
     override fun onDestroy() {
         if (restTimer != null) {
             restTimer?.cancel()
@@ -167,7 +198,14 @@ class ExerciseFragment : Fragment() {
             exerciseTimer?.cancel()
             exerciseProgress = 0
         }
+        // Shutting down the text to speech when activity is destroyed.
+        if (tts != null){
+            tts?.stop()
+            tts?.shutdown()
+        }
+
         super.onDestroy()
         _binding = null
     }
+
 }
