@@ -1,5 +1,7 @@
 package com.kay.a7minutesworkout.fragments
 
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
+import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
 import java.util.*
 
@@ -20,6 +23,9 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
     // Text to speak
     private var tts: TextToSpeech? = null
+
+    // Media sound
+    private var player: MediaPlayer? = null
 
     // Variable for 10 seconds / Variable for Rest timer
     /** --Pause tid-- */
@@ -75,6 +81,18 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         // (1) Check if the timer (-CountDownTimer-) is running. if it is not null then cancel the running timer and start the new one.
         // (2) Initiate  the restProgress which is 0.
         // In other words, we reset the timer if we go back to the first fragment
+
+        try {
+            val soundURI = Uri.parse(
+                "android.resource://com.kay.a7minutesworkout/" + R.raw.press_start
+            )
+            player = MediaPlayer.create(context, soundURI)
+            player?.isLooping = false // <- Sets the player to be looping or non-looping.
+            player?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         binding.flRestView.visibility = View.VISIBLE
         binding.tvTitle.visibility = View.VISIBLE
         binding.tvExerciseName.visibility = View.INVISIBLE
@@ -89,7 +107,14 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         if (restTimer != null) {
             restTimer!!.cancel() // <- !! means this is for sure not null
             restProgress = 0 // <- Initiate restProgress
+            /** Speak out */
         }
+        if (currentExercisePosition >= -1) {
+            speakOut(exerciseList!![currentExercisePosition + 1].getName())
+        } else {
+            speakOut(exerciseList!![currentExercisePosition].getName())
+        }
+        /** Speak out */
 
         // This function is used to set the progress details.
         setRestProgressBar()
@@ -99,7 +124,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun setRestProgressBar() {
         binding.progressBar.progress = restProgress
 
-        restTimer = object :
+        restTimer = object : // changed 10000 to 3000
             CountDownTimer(10000, 1000) { // <- it start from 10 sec and every countdown is 1 second
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
@@ -148,7 +173,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun setExerciseProgressBar() {
         binding.progressBarExercise.progress = exerciseProgress
 
-        exerciseTimer = object : CountDownTimer(30000, 1000) {
+        exerciseTimer = object : CountDownTimer(30000, 1000) { // changed from 30000 to 3000
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 exerciseProgress++
@@ -187,6 +212,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun speakOut(text: String) {
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
+
     /** Text to speech features */
 
     override fun onDestroy() {
@@ -199,9 +225,13 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
             exerciseProgress = 0
         }
         // Shutting down the text to speech when activity is destroyed.
-        if (tts != null){
+        if (tts != null) {
             tts?.stop()
             tts?.shutdown()
+        }
+        // shutting down the media player
+        if (player != null) {
+            player?.stop()
         }
 
         super.onDestroy()
