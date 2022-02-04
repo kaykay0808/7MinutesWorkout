@@ -11,6 +11,4 @@
     android:textColor="#212121"
     android:textSize="14sp"
     android:textStyle="bold"
-    tools:text="1"
-
-    />
+    tools:text="1" />

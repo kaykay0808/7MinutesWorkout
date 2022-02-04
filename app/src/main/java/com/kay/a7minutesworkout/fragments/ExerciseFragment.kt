@@ -17,7 +17,7 @@ import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
 import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
-import java.util.*
+import java.util.Locale
 
 class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
@@ -237,5 +237,4 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         super.onDestroy()
         _binding = null
     }
-
 }
