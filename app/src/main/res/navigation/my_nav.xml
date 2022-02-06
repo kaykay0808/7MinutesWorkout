@@ -22,5 +22,17 @@
         <action
             android:id="@+id/action_exerciseFragment_to_startFragment"
             app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_finishFragment"
+            app:destination="@id/finishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finishFragment"
+        android:name="com.kay.a7minutesworkout.fragments.FinishFragment"
+        android:label="fragment_finish"
+        tools:layout="@layout/fragment_finish" >
+        <action
+            android:id="@+id/action_finishFragment_to_startFragment"
+            app:destination="@id/startFragment" />
     </fragment>
 </navigation>
