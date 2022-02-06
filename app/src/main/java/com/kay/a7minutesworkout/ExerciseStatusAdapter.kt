@@ -7,7 +7,7 @@ import com.kay.a7minutesworkout.databinding.ItemExerciseStatusBinding
 
 class ExerciseStatusAdapter(val items: MutableList<ExerciseModel>) :
     RecyclerView.Adapter<ExerciseStatusAdapter.MainViewHolder>() {
-    class MainViewHolder(val binding: ItemExerciseStatusBinding) :
+    class MainViewHolder(private val binding: ItemExerciseStatusBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val tvItem = binding.tvItem
     }
@@ -22,12 +22,14 @@ class ExerciseStatusAdapter(val items: MutableList<ExerciseModel>) :
         )
     }
 
+    // Assign every id to each circle
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val model: ExerciseModel = items[position]
         holder.tvItem.text =
             model.getId().toString() // <- Getting the Id as a string from our model.
     }
 
+    // This say how many elements we have
     override fun getItemCount(): Int {
         return items.size
     }

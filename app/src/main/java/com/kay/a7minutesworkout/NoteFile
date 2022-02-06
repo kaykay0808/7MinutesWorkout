@@ -1,0 +1,17 @@
+DISPLAYING THE RECYCLER VIEW.
+(1) CREATE AN ADAPTER OBJECT (global variable) set it to null.
+-> now we can use this adapter to assign it to our RecyclerView as an adapter.
+
+(2) Create a new function that will display the recyclerview to the bottom.
+-> find the recyclerview and bind it and set the "layoutManager" to "LinearLayoutManager()"
+-> we can now put the parameters. (this, LinearLayoutManager.Horizontal, false)
+
+(3) use the exerciseAdapter object that we create and assign the ExerciseStatusAdapter() to it, which is the adapter class we have created.
+-> passed in the exerciseList to the adapter, and force it to be not null (unwrapped it)
+
+(4) now assign the adapter to the recycler view.
+-> call the function from onCreate.
+(You can run and test now)
+
+(5) You might need to center it in XML.
+

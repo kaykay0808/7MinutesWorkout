@@ -13,8 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
+import com.kay.a7minutesworkout.ExerciseStatusAdapter
 import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
 import java.util.Locale
@@ -26,6 +28,9 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
     // Media sound
     private var player: MediaPlayer? = null
+
+    // Adapter Object for our RecyclerView.
+    var exerciseAdapter: ExerciseStatusAdapter? = null
 
     // Variable for 10 seconds / Variable for Rest timer
     /** --Pause tid-- */
@@ -118,6 +123,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // This function is used to set the progress details.
         setRestProgressBar()
+        setupRecyclerView()
     }
 
     // function which will set the rest progressbar
@@ -194,6 +200,15 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
                 }
             }
         }.start()
+    }
+
+    /** Setup for the RecyclerView Status bar. */
+    fun setupRecyclerView() {
+        binding.recyclerViewExerciseStatus.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        // Assigning the adapter to the recyclerView
+        binding.recyclerViewExerciseStatus.adapter = exerciseAdapter
     }
 
     /** Text to speech features */
