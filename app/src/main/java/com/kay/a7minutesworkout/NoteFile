@@ -13,5 +13,42 @@ DISPLAYING THE RECYCLER VIEW.
 -> call the function from onCreate.
 (You can run and test now)
 
-(5) You might need to center it in XML.
+(5) We might need to center it in XML.
+-------------------------------------------------------------
+
+CHANGE THE BACKGROUND COLOR ON THE EXERCISE WE ARE ON IN THE RECYCLERVIEW STATUS
+(1) in Adapter (onBindViewHolder) use the when statement to call the ExerciseModel (we already have a model object above) to call the getIsSelected() and getIsCompleted() function to do something.
+-> we also need an else block when both of them is inActive.
+-> So we need to think what we need to change in those different statement.
+-> in getIsSelected we want to change the tvItem background. use ContextCompat.getDrawable() to get the background color.
+-> We need to pass in the context which if from "holder.itemView.context"
+-> also pass in our color (item_circular_thin_color_accent_border)with R.drawable
+-> also in getIsSelected we want to change the text color. use "setTextColor()
+    -> pass in Color.parseColor()
+    -> pass in the color value "#212121"
+
+(2) we can now just move on to get is completed
+-> just copy and paste from what we did in the getIsSelected
+-> change the background now to item_circular_color_accent_background (The green background)
+-> set the text color to white (#FFFFFF)
+
+(3) copy and paste in else block to and change the background color to "item_circular_color_gray_background"
+
+(4) Now we need to trigger this in exerciseFragment
+-> Find the setRestProgressBar method
+    -> inside onFinish method before the setupExerciseView() we should call the exerciseList (and unwrapped it) and find the [currentPosition] and set the IsSelected() to true.
+    -> we also need to notify our Adapter that something have changed with the "notifyDataSetChanged()" method, so call this method with our "exerciseAdapter" object
+-> find the setExerciseProgressBar() and inside onFinish we need to almost do the same.
+    -> so inside onFinish before the if Statement. Do the same as before and put the setIsSelected() to false
+    -> set the setIsCompleted to true with a new line.
+
+    now we can test.
+
+    SUMMARY -> we set the current exercise to white
+    -> the finish exercise to green
+    -> the Next Exercise to grey. (the one we haven't done yet)
+-------------------------------------------------------------------------
+
+
+
 

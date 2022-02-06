@@ -112,6 +112,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         if (restTimer != null) {
             restTimer!!.cancel() // <- !! means this is for sure not null
             restProgress = 0 // <- Initiate restProgress
+
             /** Speak out */
         }
         if (currentExercisePosition >= -1) {
@@ -123,7 +124,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // This function is used to set the progress details.
         setRestProgressBar()
-        setupRecyclerView()
+        setupExerciseRecyclerView()
     }
 
     // function which will set the rest progressbar
@@ -143,6 +144,11 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
             override fun onFinish() {
                 currentExercisePosition++
+
+                // Trigger the adapter.
+                exerciseList!![currentExercisePosition].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 setupExerciseView()
             }
         }.start()
@@ -188,6 +194,12 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
+
+                // Trigger the adapter.
+                exerciseList!![currentExercisePosition].setIsSelected(false)
+                exerciseList!![currentExercisePosition].setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 // we need to go back to the rest view again when we are finish
                 if (currentExercisePosition < exerciseList?.size!! - 1) {
                     setupRestView()
@@ -203,7 +215,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     }
 
     /** Setup for the RecyclerView Status bar. */
-    fun setupRecyclerView() {
+    private fun setupExerciseRecyclerView() {
         binding.recyclerViewExerciseStatus.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
