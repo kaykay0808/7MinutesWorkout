@@ -50,6 +50,34 @@ CHANGE THE BACKGROUND COLOR ON THE EXERCISE WE ARE ON IN THE RECYCLERVIEW STATUS
 -------------------------------------------------------------------------
 
 CREATING THE FINISH FRAGMENT.
+(1) set up the bindings in finish fragment.
+(2) set up the action bar.
+(3) set the navigation back
+(4) bind the button and call the setOnClicklistener
+    -> call the finish() inside the setOnClickListener.
+(5) Find the setExerciseProgressBar() in ExerciseFragment
+    -> inside the onFinish move the 3 lines that "triggers the adapter" inside the if statement, and before the setupRestView()
+    -> in the else block delete the toast message and put in finish() method
+    -> figure out how to navigate to the finishFragment
+-----------------------------------------------------------------------------------
+
+SETTING UP THE CUSTOM DIALOG FOR THE BACK BUTTON
+(1) Create the layout.
+(2) The ExerciseFragment is the place I want to implement the dialog box functionality.
+(3) So instead of the navigation back method, we want to replace with our own function.
+    -> create a new function and call it "customDialogForBackButton()"
+    -> inside this body function we will first need to create a "customDialog" object which will just be a Dialog(this).
+    -> we need to create a binding to this xml file, so create an object and call it "dialogBinding" which will be a  "DialogCustomBackConfirmationBinding.inflate(layoutInflater)"
+    -> (now we can use this dialogBinding to get access to the items of it)
+    -> now we need to give our customDialog a contentView (setContentView()) to make sure how it's gonna looks like
+        -> We can pass in DialogBinding.root for making sure how it's looks like (So we just saying that customDialog should looks like our xml file which is our custom dialog box.)
+    -> We want to make sure that if the user touch outside the dialog box, it would not be cancel, for that we can call setCanceledOnTouchOutside() with customDialog and put it to false.
+    -> Now we can access the two buttons (dialogBinding.btn***) and put the setOnclickListener to both of them.
+        -> in "yes" button we want to close the activity and call the dismiss() method from customDialog
+        -> in "no" we can just dismiss the dialog box
+    -> We might need to create override fun onBackPressed() and call the function from there
+
+
 
 
 

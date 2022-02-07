@@ -1,5 +1,7 @@
 package com.kay.a7minutesworkout.fragments
 
+import android.app.Dialog
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -9,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
 import com.kay.a7minutesworkout.ExerciseStatusAdapter
 import com.kay.a7minutesworkout.R
+import com.kay.a7minutesworkout.databinding.DialogCustomBackConfirmationBinding
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
 import java.util.Locale
 
@@ -38,6 +40,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
     private var restProgress =
         0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
+    private var restTimerDuration : Long = 1
 
     private val restTimerStartValue = 10
 
@@ -45,6 +48,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     /** --Trenings tid-- */
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
+    private var exerciseTimerDuration : Long = 1
 
     /** Exercise models*/
     private var exerciseList: MutableList<ExerciseModel>? = null
@@ -74,7 +78,8 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // navigate back with navHost
         binding.toolbarExercise.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            // findNavController().popBackStack()
+            customDialogForBackButton()
         }
 
         // Text to speak
@@ -132,7 +137,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.progressBar.progress = restProgress
 
         restTimer = object : // changed 10000 to 3000
-            CountDownTimer(10000, 1000) { // <- it start from 10 sec and every countdown is 1 second
+            CountDownTimer(restTimerDuration *1000, 1000) { // <- it start from 10 sec and every countdown is 1 second
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 restProgress++
@@ -185,7 +190,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun setExerciseProgressBar() {
         binding.progressBarExercise.progress = exerciseProgress
 
-        exerciseTimer = object : CountDownTimer(30000, 1000) { // changed from 30000 to 3000
+        exerciseTimer = object : CountDownTimer(exerciseTimerDuration*1000, 1000) { // changed from 30000 to 3000
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 exerciseProgress++
@@ -194,21 +199,16 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-
-                // Trigger the adapter.
-                exerciseList!![currentExercisePosition].setIsSelected(false)
-                exerciseList!![currentExercisePosition].setIsCompleted(true)
-                exerciseAdapter!!.notifyDataSetChanged()
-
                 // we need to go back to the rest view again when we are finish
                 if (currentExercisePosition < exerciseList?.size!! - 1) {
+                    // Trigger the adapter.
+                    exerciseList!![currentExercisePosition].setIsSelected(false)
+                    exerciseList!![currentExercisePosition].setIsCompleted(true)
+                    exerciseAdapter!!.notifyDataSetChanged()
                     setupRestView()
                 } else {
-                    Toast.makeText(
-                        context,
-                        "SHIT!! YOU MADE IT AND COMPLETED 7 MINUTES WORKOUT",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // we need to navigate here to the finish fragment.
+                    findNavController().navigate(R.id.action_exerciseFragment_to_finishFragment)
                 }
             }
         }.start()
@@ -221,6 +221,21 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
         // Assigning the adapter to the recyclerView
         binding.recyclerViewExerciseStatus.adapter = exerciseAdapter
+    }
+    private fun customDialogForBackButton(){
+        val customDialog = Dialog(requireContext())
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+
+        dialogBinding.btnYes.setOnClickListener {
+            findNavController().popBackStack()
+            customDialog.dismiss()
+        }
+        dialogBinding.btnNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        customDialog.show()
     }
 
     /** Text to speech features */
@@ -239,7 +254,6 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun speakOut(text: String) {
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
-
     /** Text to speech features */
 
     override fun onDestroy() {
