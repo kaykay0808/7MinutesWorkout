@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_startFragment_to_exerciseFragment"
             app:destination="@id/exerciseFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_bmiFragment"
+            app:destination="@id/bmiFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseFragment"
@@ -33,6 +36,15 @@
         tools:layout="@layout/fragment_finish" >
         <action
             android:id="@+id/action_finishFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bmiFragment"
+        android:name="com.kay.a7minutesworkout.fragments.BmiFragment"
+        android:label="fragment_bmi"
+        tools:layout="@layout/fragment_bmi" >
+        <action
+            android:id="@+id/action_bmiFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
 </navigation>

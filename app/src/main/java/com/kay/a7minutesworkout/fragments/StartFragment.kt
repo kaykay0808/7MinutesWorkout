@@ -29,6 +29,10 @@ class StartFragment : Fragment() {
         binding.flStart.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_exerciseFragment)
         }
+
+        binding.flBmi.setOnClickListener {
+            findNavController().navigate(R.id.action_startFragment_to_bmiFragment)
+        }
     }
 
     override fun onDestroy() {
