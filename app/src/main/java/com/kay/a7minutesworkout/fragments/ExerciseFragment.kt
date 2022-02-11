@@ -40,7 +40,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
     private var restProgress =
         0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
-    private var restTimerDuration : Long = 1
+    private var restTimerDuration : Long = 4
 
     private val restTimerStartValue = 10
 
@@ -48,7 +48,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     /** --Trenings tid-- */
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
-    private var exerciseTimerDuration : Long = 1
+    private var exerciseTimerDuration : Long = 4
 
     /** Exercise models*/
     private var exerciseList: MutableList<ExerciseModel>? = null
@@ -64,7 +64,6 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 

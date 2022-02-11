@@ -77,6 +77,52 @@ SETTING UP THE CUSTOM DIALOG FOR THE BACK BUTTON
         -> in "no" we can just dismiss the dialog box
     -> We might need to create override fun onBackPressed() and call the function from there
 
+----------------------------------------------------------------------------------------
+BMI Fragment
+(1) Create a method that will validate our metric unit. (check if we have entered something or not.)
+    -> let's call this function validateMetricUnits
+    -> this function should return a Boolean
+    -> create an object which we can call "isValid" and set it to true by default.
+    -> get the value from our edit text view (etMetricUnitWeight) in an if statement and set the text to String and isEmpty method.
+        -> so if it's empty. set the isValid to false.
+    -> create an else if block and do the same with etMetricHeight
+    -> now we want to return the result of this from isValid.
+(2) create some calculation.
+    -> in onCreate bind the button and add an onclickListener.
+    -> we only want to calculate if validateMetricUnits return true (which is our function we just create)
+    -> create and object and call it heightValue which will be a "type" float and our etMetricUnitHeight.
+        -> get the text to String and set it toFloat (I don't think we need to get string first, but maybe to be sure?)
+        -> Divide this to 100
+    -> do the same to weight creating an object etg, but this time we are not going to divide it in 100.
+    -> now we going to calculate the Bmi. Create an object and call it bmi which will be the bmi formula.
+        -> calculation : [weight / (kg)] / height(cm) / height(cm) * 10.000 (we are going to use the meter version so we don't need to times it by 10.000)
+        -> weight value / ( heightValue * heightValue )
+    -> create an else block with a toast message "please enter valid values"
+    -> before this else block we want to display the Bmi Results. let's create a function for that and call it displayBmiResult
+        -> pass in a type float to the parameter (bmi: float)
+        -> now we need to set the values
+            -> create 2 objects: bmiLabel and bmiDescription which is a type string
+            create an if statement and call the compareTo() method with with our bmi parameter object.
+            -> pass if 15f in compareTo method. we need to check if it's lesser or equal to 15 with the value 0 ?
+            -> then in this if body we want to set bmiLabel "Very severely underweight" and the bmiDescription to "Ops! you really need to take better care of yourself! eat more!"
+        -> create an else if block. I don't understand this line so I will just write it down here ->(else if(bmi.compareTO(15f) > 0 && bmi.compareTo(16f) <=0)
+        -> set the bmiLabel to "Severely underweight" and bmiDescription = "oops! you really need to take better care of yourself"
+        -> else if its between 16f and 18.5f = "underweight"
+        -> else if between 18f and 25f = "normal"
+        -> else if over 25
+-> set the linearLayout to visible inside this body function
+-> bind the tvBmiValue and set the text to bmiValue.
+    -> create an object bmiValue which will be a BigDecimal()
+        -> pass in bmi.toDouble() ann call the setScale() with BigDecimal method
+            -> pass in newScale: 2, RoundingMode.HALF_EVEN and convert it to String
+    -> bind the tvBmiType to and set the text to bmiLabel
+    -> and finally the tvBmiDescription text to bmiDescription
+-> now we just need to call the function once we click on the buttons inside the if statement below and our objects
+    -> we need to pass in the bmi when we call the function
+
+
+
+
 
 
 
