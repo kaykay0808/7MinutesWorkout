@@ -1,7 +1,6 @@
 package com.kay.a7minutesworkout.fragments
 
 import android.app.Dialog
-import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -40,7 +39,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         null // <- CountDownTimer is an abstract class. We need to create a new instance with an object notation.
     private var restProgress =
         0 // <- Variable for timer progress. As initial value the rest progress is set to 0. as we are about to start
-    private var restTimerDuration : Long = 4
+    private var restTimerDuration: Long = 4
 
     private val restTimerStartValue = 10
 
@@ -48,7 +47,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     /** --Trenings tid-- */
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
-    private var exerciseTimerDuration : Long = 4
+    private var exerciseTimerDuration: Long = 4
 
     /** Exercise models*/
     private var exerciseList: MutableList<ExerciseModel>? = null
@@ -136,7 +135,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.progressBar.progress = restProgress
 
         restTimer = object : // changed 10000 to 3000
-            CountDownTimer(restTimerDuration *1000, 1000) { // <- it start from 10 sec and every countdown is 1 second
+            CountDownTimer(restTimerDuration * 1000, 1000) { // <- it start from 10 sec and every countdown is 1 second
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 restProgress++
@@ -189,7 +188,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun setExerciseProgressBar() {
         binding.progressBarExercise.progress = exerciseProgress
 
-        exerciseTimer = object : CountDownTimer(exerciseTimerDuration*1000, 1000) { // changed from 30000 to 3000
+        exerciseTimer = object : CountDownTimer(exerciseTimerDuration * 1000, 1000) { // changed from 30000 to 3000
             override fun onTick(millisUntilFinished: Long) {
                 // increase restProgress by 1 value
                 exerciseProgress++
@@ -221,7 +220,7 @@ class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
         // Assigning the adapter to the recyclerView
         binding.recyclerViewExerciseStatus.adapter = exerciseAdapter
     }
-    private fun customDialogForBackButton(){
+    private fun customDialogForBackButton() {
         val customDialog = Dialog(requireContext())
         val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
         customDialog.setContentView(dialogBinding.root)
