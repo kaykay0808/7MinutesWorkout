@@ -8,11 +8,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.FragmentBmiBinding
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class BmiFragment : Fragment() {
+
+    companion object {
+        private const val METRIC_UNITS_VIEW = "METRIC_UNIT_VIEW" // Metric Unit View
+        private const val US_UNITS_VIEW = "US_UNIT_VIEW" // US Unit View
+    }
+
+    // set Default group button
+    private var currentVisibleView: String =
+        METRIC_UNITS_VIEW // A variable to hold a value to make a selected view visible
 
     private var _binding: FragmentBmiBinding? = null
     private val binding get() = _binding!!
@@ -53,6 +63,17 @@ class BmiFragment : Fragment() {
                     "please enter a valid value",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+        }
+        // RadioGroup
+        makeMetricUnitViewVisible()
+
+        // Add a changeListener to our radioGroup
+        binding.radioGroupUnits.setOnCheckedChangeListener{_, checkedId: Int ->
+            if (checkedId == R.id.rbMetricUnits) {
+                makeMetricUnitViewVisible()
+            } else {
+                makeUsUnitViewVisible()
             }
         }
     }
@@ -110,5 +131,30 @@ class BmiFragment : Fragment() {
         binding.tvBMIValue.text = bmiValue
         binding.tvBMIType.text = bmiLabel
         binding.tvBMIDescription.text = bmiDescription
+    }
+    // Function that make metric unit Visible
+    private fun makeMetricUnitViewVisible() {
+        // Current View is updated here
+        currentVisibleView = METRIC_UNITS_VIEW
+        binding.linearLayoutMetricTextInputHolder.visibility = View.VISIBLE // Show metric system LinearLayout
+        binding.linearUsLayoutTextInputHolder.visibility = View.INVISIBLE
+
+        binding.etMetricUnitHeight.text!!.clear() // height value is cleared if it is added.
+        binding.etMetricUnitWeight.text!!.clear() // weight value is cleared if it is added.
+
+        binding.linearLayoutDisplayBmiResult.visibility = View.INVISIBLE
+    }
+
+    // Function that make US Unit view visible.
+    private fun makeUsUnitViewVisible() {
+        // Current View is updated here
+        currentVisibleView = US_UNITS_VIEW
+        binding.linearLayoutMetricTextInputHolder.visibility = View.INVISIBLE // Show metric system LinearLayout
+        binding.linearUsLayoutTextInputHolder.visibility = View.VISIBLE
+
+        binding.etUsUnitHeight.text!!.clear() // height value is cleared if it is added.
+        binding.etMetricUnitWeight.text!!.clear() // weight value is cleared if it is added.
+
+        binding.linearLayoutDisplayBmiResult.visibility = View.INVISIBLE
     }
 }
