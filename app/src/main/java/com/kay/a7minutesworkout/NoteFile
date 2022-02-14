@@ -120,6 +120,37 @@ BMI Fragment
 -> now we just need to call the function once we click on the buttons inside the if statement below and our objects
     -> we need to pass in the bmi when we call the function
 
+---------------------------------------------------------------------------------------------------
+
+FINALIZING THE BMI CALCULATOR WITH THE US SYSTEM
+(1) we need to validate once again, but try first to put it in when statement.
+    -> call this function validateUsUnits and this function is returning a Boolean.
+    -> so use the when Statement to check if the textInput is empty. if empty set isValid to false. (we have created an object before the when statement)
+    -> we are going to return isValid.
+(2) now we need to do the calculation.
+    -> Create this new function which we will call calculateUnits()
+    -> we need to make a if statement which would check which current view we are on (currentVisible == Metric_units_view)
+    -> copy and paste what we have from the button calculation.
+    -> create an else block and do the same with validateUsUnits()
+        -> so inside the if statement body we need an object which we will call usUnitHeightValue
+            -> this is a type String which will be our etUsMetricUnitHeightFeet text to String.
+            -> create next object which we will call usUnitValueInch which would be type string and set it to etUsMetricUnitHeightInch (basicly the same as the first object)
+            -> create third object which would be the weight call it "usUnitWeightValue" which will be a type Float and would be our etUsMetricUnitWeight. also remember to set its text value to String.
+                -> convert the last object to float.
+
+    -> Now we have all the values, and will do some calculation
+        -> create a new object and call this heightValue
+            -> this will be our formula (usUnitHeightValue.toFloat() + usUnitHeightValueFeet.toFloat() * 12)
+    -> create a new object which we will call bmi. this will be 703 * (usUnitWeightValue / (heightValue * heightValue))
+
+    -> now we can display the the bmi with our displayBmiResult(bmi)
+
+    -> create a new else block which will just be this Toast message that make us enter a valid value.
+
+    -> now we can call this function in our btnCalculation
+
+
+
 
 
 

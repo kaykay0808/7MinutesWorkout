@@ -117,7 +117,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group_units">
+        app:layout_constraintTop_toBottomOf="@+id/radio_group_units"
+        tools:visibility="visible">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInput_layout_us_unit_weight"
@@ -155,6 +156,27 @@
                 android:inputType="numberDecimal"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Inch -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMetricUsUnitHeightInch"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:boxStrokeColor="@color/colorAccent"
+            app:hintTextColor="@color/colorAccent"
+            tools:visibility="visible"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etUsMetricUnitHeightInch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="HEIGHT (in Inch)"
+            android:inputType="numberDecimal"
+            android:textSize="16sp" />
     </LinearLayout>
     <!-- The Us system linearLayout Holder-->
 
