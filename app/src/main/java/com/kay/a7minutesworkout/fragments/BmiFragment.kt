@@ -52,24 +52,13 @@ class BmiFragment : Fragment() {
         // TODO: call the the function with the button
         binding.btnCalculateUnits.setOnClickListener {
             // we only want to calculate if validate function return true.
-            if (validateMetricUnit()) {
-                val heightValue: Float = binding.etMetricUnitHeight.text.toString().toFloat() / 100
-                val weightValue: Float = binding.etMetricUnitWeight.text.toString().toFloat()
-                val bmi = weightValue / (heightValue * heightValue)
-                displayBmiResult(bmi)
-            } else {
-                Toast.makeText(
-                    context,
-                    "please enter a valid value",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            calculateUnits()
         }
         // RadioGroup
         makeMetricUnitViewVisible()
 
         // Add a changeListener to our radioGroup
-        binding.radioGroupUnits.setOnCheckedChangeListener{_, checkedId: Int ->
+        binding.radioGroupUnits.setOnCheckedChangeListener { _, checkedId: Int ->
             if (checkedId == R.id.rbMetricUnits) {
                 makeMetricUnitViewVisible()
             } else {
@@ -82,12 +71,76 @@ class BmiFragment : Fragment() {
     private fun validateMetricUnit(): Boolean {
         var isValid = true
 
-        if (binding.etMetricUnitWeight.text.toString().isEmpty()) {
+        when {
+            binding.etMetricUnitWeight.text.toString().isEmpty() -> {
+                isValid = false
+            }
+            binding.etMetricUnitHeight.text.toString().isEmpty() -> {
+                isValid = false
+            }
+        }
+
+        /*if (binding.etMetricUnitWeight.text.toString().isEmpty()) {
             isValid = false
         } else if (binding.etMetricUnitHeight.text.toString().isEmpty()) {
             isValid = false
+        }*/
+        return isValid
+    }
+
+    private fun validateUsUnits(): Boolean {
+        var isValid = true
+        when {
+            binding.etUsUnitWeight.text.toString().isEmpty() -> {
+                isValid = false
+            }
+            binding.etUsUnitHeightFeet.text.toString().isEmpty() -> {
+                isValid = false
+            }
+            binding.etUsUnitHeightInch.text.toString().isEmpty() -> {
+                isValid = false
+            }
         }
         return isValid
+    }
+
+    // Calculating Us System
+    private fun calculateUnits() {
+        if (currentVisibleView == METRIC_UNITS_VIEW) {
+            if (validateMetricUnit()) {
+                val heightValue: Float = binding.etMetricUnitHeight.text.toString().toFloat() / 100
+                val weightValue: Float = binding.etMetricUnitWeight.text.toString().toFloat()
+                val bmi = weightValue / (heightValue * heightValue)
+                displayBmiResult(bmi)
+            } else {
+                Toast.makeText(
+                    context,
+                    "please enter a valid value",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } else {
+            if (validateUsUnits()) {
+                val usHeightValueFeet: String = binding.etUsUnitHeightFeet.text.toString()
+                val usHeightValueInch: String = binding.etUsUnitHeightInch.text.toString()
+                val usWeightValue: Float = binding.etUsUnitWeight.text.toString().toFloat()
+
+                // The weird us formula
+                // Merge the height feet and inch values and multiply by 12
+                val heightValue = usHeightValueInch.toFloat() + usHeightValueFeet.toFloat() * 12
+
+                // The bmi calculation
+                val bmi = 703 * (usWeightValue / (heightValue * heightValue))
+
+                displayBmiResult(bmi)
+            } else {
+                Toast.makeText(
+                    context,
+                    "please enter a valid value",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     // TODO: Create a function that will display our message and result
@@ -132,11 +185,13 @@ class BmiFragment : Fragment() {
         binding.tvBMIType.text = bmiLabel
         binding.tvBMIDescription.text = bmiDescription
     }
+
     // Function that make metric unit Visible
     private fun makeMetricUnitViewVisible() {
         // Current View is updated here
         currentVisibleView = METRIC_UNITS_VIEW
-        binding.linearLayoutMetricTextInputHolder.visibility = View.VISIBLE // Show metric system LinearLayout
+        binding.linearLayoutMetricTextInputHolder.visibility =
+            View.VISIBLE // Show metric system LinearLayout
         binding.linearUsLayoutTextInputHolder.visibility = View.INVISIBLE
 
         binding.etMetricUnitHeight.text!!.clear() // height value is cleared if it is added.
@@ -149,10 +204,12 @@ class BmiFragment : Fragment() {
     private fun makeUsUnitViewVisible() {
         // Current View is updated here
         currentVisibleView = US_UNITS_VIEW
-        binding.linearLayoutMetricTextInputHolder.visibility = View.INVISIBLE // Show metric system LinearLayout
+        binding.linearLayoutMetricTextInputHolder.visibility =
+            View.INVISIBLE // Show metric system LinearLayout
         binding.linearUsLayoutTextInputHolder.visibility = View.VISIBLE
 
-        binding.etUsUnitHeight.text!!.clear() // height value is cleared if it is added.
+        binding.etUsUnitHeightFeet.text!!.clear() // height value is cleared if it is added.
+        binding.etUsUnitHeightInch.text!!.clear() // height value is cleared if it is added.
         binding.etMetricUnitWeight.text!!.clear() // weight value is cleared if it is added.
 
         binding.linearLayoutDisplayBmiResult.visibility = View.INVISIBLE

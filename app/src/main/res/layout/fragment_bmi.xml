@@ -158,7 +158,7 @@
                 app:hintTextColor="@color/colorAccent">
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etUsUnitHeight"
+                    android:id="@+id/etUsUnitHeightFeet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="HEIGHT (in feet)"
@@ -180,7 +180,7 @@
                 tools:visibility="visible" >
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etUsMetricUnitHeightInch"
+                    android:id="@+id/etUsUnitHeightInch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="HEIGHT (in Inch)"
