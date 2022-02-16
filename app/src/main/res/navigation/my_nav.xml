@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_startFragment_to_bmiFragment"
             app:destination="@id/bmiFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseFragment"
@@ -45,6 +48,15 @@
         tools:layout="@layout/fragment_bmi" >
         <action
             android:id="@+id/action_bmiFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.kay.a7minutesworkout.fragments.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
 </navigation>

@@ -149,6 +149,22 @@ FINALIZING THE BMI CALCULATOR WITH THE US SYSTEM
 
     -> now we can call this function in our btnCalculation
 
+---------------------------------------------------------------------------------------------------
+
+Adding the History UI and fragment
+(1) create the history button
+(2) Create the new fragment. call it HistoryFragment
+(3) set up the navigation with our navHost.
+(4) inside the layouts we just need to set up the toolbar.
+    -> also change the title to history.
+(5) set up the bindings
+(6) in our code set up the setSupportActionBar which is the toolbar setup for fragments.
+(7) set up the back press method
+(8) we will set up the recyclerView for this fragment later (try to set up the recyclerView)
+(9) add a set on click listener which will move us to our new fragment
+
+
+
 
 
 

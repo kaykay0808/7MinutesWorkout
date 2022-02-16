@@ -33,6 +33,10 @@ class StartFragment : Fragment() {
         binding.flBmi.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_bmiFragment)
         }
+
+        binding.flHistory.setOnClickListener {
+            findNavController().navigate(R.id.action_startFragment_to_historyFragment)
+        }
     }
 
     override fun onDestroy() {

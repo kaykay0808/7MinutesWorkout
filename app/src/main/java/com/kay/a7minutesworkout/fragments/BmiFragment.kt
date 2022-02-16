@@ -214,4 +214,9 @@ class BmiFragment : Fragment() {
 
         binding.linearLayoutDisplayBmiResult.visibility = View.INVISIBLE
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
