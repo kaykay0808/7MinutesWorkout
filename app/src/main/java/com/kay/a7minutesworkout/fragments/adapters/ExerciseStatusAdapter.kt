@@ -1,10 +1,12 @@
-package com.kay.a7minutesworkout
+package com.kay.a7minutesworkout.fragments.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.kay.a7minutesworkout.ExerciseModel
+import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.ItemExerciseStatusBinding
 
 class ExerciseStatusAdapter(val items: MutableList<ExerciseModel>) :
