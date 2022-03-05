@@ -13,7 +13,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     var items = emptyList<HistoryEntity>()
 
-    class ViewHolder(binding: ItemHistoryRowBinding):RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(binding: ItemHistoryRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val llHistoryItemMain = binding.llHistoryItemMain
         val tvItem = binding.tvItem
         val tvPosition = binding.tvPosition
@@ -52,7 +52,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
         return items.size
     }
 
-    fun setData(historyEntity : List<HistoryEntity>){
+    fun setData(historyEntity: List<HistoryEntity>) {
         val historyDiffUtil = HistoryRecyclerViewDiffUtil(items, historyEntity)
         val historyDiffResult = DiffUtil.calculateDiff(historyDiffUtil)
         this.items = historyEntity

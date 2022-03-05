@@ -14,7 +14,6 @@ import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.data.HistoryEntity
 import com.kay.a7minutesworkout.databinding.FragmentFinishBinding
 import com.kay.a7minutesworkout.model.ExerciseViewModel
-import com.kay.a7minutesworkout.model.HistoryDao
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -49,11 +48,11 @@ class FinishFragment : Fragment() {
         addDateToDatabase()
     }
 
-    private fun addDateToDatabase () {
+    private fun addDateToDatabase() {
         // setup calender
-        val myCalendar = Calendar.getInstance()
+        val myCalendar = Calendar.getInstance() // <- Calenders current Instance
         val dateTime = myCalendar.time
-        Log.e("Date: ","" + dateTime)
+        Log.e("Date: ", "" + dateTime)
 
         // Date Formatter
         val sdf = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
@@ -64,11 +63,6 @@ class FinishFragment : Fragment() {
 
         lifecycleScope.launch {
             exerciseViewModel.insertData(HistoryEntity(date))
-            //historyDao.insert(HistoryEntity(date)) // <- Add date function is called
-            Log.e(
-                "Date : ",
-                "Added..."
-            ) // Printed in log which is printed if the complete execution is done.
         }
     }
 

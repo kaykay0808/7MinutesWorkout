@@ -1,25 +1,24 @@
 package com.kay.a7minutesworkout.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kay.a7minutesworkout.data.HistoryEntity
-import com.kay.a7minutesworkout.fragments.adapters.HistoryAdapter
 import com.kay.a7minutesworkout.databinding.FragmentHistoryBinding
+import com.kay.a7minutesworkout.fragments.adapters.HistoryAdapter
 import com.kay.a7minutesworkout.model.ExerciseViewModel
-import kotlinx.coroutines.launch
+import com.kay.a7minutesworkout.model.SharedViewModel
 
 class HistoryFragment : Fragment() {
 
     private val exerciseViewModel: ExerciseViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by viewModels()
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 
     private var _binding: FragmentHistoryBinding? = null
@@ -50,14 +49,21 @@ class HistoryFragment : Fragment() {
         // recycler view
         recyclerViewSetup()
 
-        getAllCompletedDates()
-    }
+        // getAllCompletedDates()
+        exerciseViewModel.getAllData.observe(
+            viewLifecycleOwner,
+            {
+                setupHistoryList(it)
+            }
+        )
 
-    private fun getAllCompletedDates() {
-        Log.e("Date: ", "getAllCompletedDates run")
-        lifecycleScope.launch {
-            exerciseViewModel.getAllData
-        }
+        // if empty
+        sharedViewModel.emptyDatabase.observe(
+            viewLifecycleOwner,
+            {
+                showEmptyDatabaseView(it)
+            }
+        )
     }
 
     private fun recyclerViewSetup() {
@@ -76,6 +82,12 @@ class HistoryFragment : Fragment() {
             binding.rvHistory.visibility = View.VISIBLE
             binding.tvNoDataAvailable.visibility = View.INVISIBLE
         }
+    }
+
+    private fun setupHistoryList(data: List<HistoryEntity>) {
+        sharedViewModel.checkIfDatabaseEmpty(data)
+        adapter.setData(data)
+        binding.rvHistory.scheduleLayoutAnimation()
     }
 
     override fun onDestroy() {

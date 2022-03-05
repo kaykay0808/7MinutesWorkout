@@ -16,10 +16,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kay.a7minutesworkout.Constants
 import com.kay.a7minutesworkout.ExerciseModel
-import com.kay.a7minutesworkout.fragments.adapters.ExerciseStatusAdapter
 import com.kay.a7minutesworkout.R
 import com.kay.a7minutesworkout.databinding.DialogCustomBackConfirmationBinding
 import com.kay.a7minutesworkout.databinding.FragmentExerciseBinding
+import com.kay.a7minutesworkout.fragments.adapters.ExerciseStatusAdapter
 import java.util.Locale
 
 class ExerciseFragment : Fragment(), TextToSpeech.OnInitListener {
