@@ -27,7 +27,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val date = items[position]
         holder.tvPosition.text = (position + 1).toString()
-        holder.tvItem.text = date.toString()
+        holder.tvItem.text = date.date
 
         // change the background color of the linearLayout
         // %2 means every second items
